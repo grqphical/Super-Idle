@@ -16,8 +16,9 @@ def mainFunction():
     # Checks if the user used the timed run option if so, runs a for loop rather than a while loop
     if timedRun:
         for i in range(timedAmount):
-            pydirectinput.typewrite('wasd', interval=0.5)
-            time.sleep(1)
+            if stopThread == True:
+                break
+            pydirectinput.typewrite('wasd', interval=0.25)
         print('Script Finished. Press DEL to exit the process')
         return
     else:
@@ -26,16 +27,16 @@ def mainFunction():
             pydirectinput.typewrite('wasd', interval=0.5)
             i += 1
             if stopThread == True:
-                break 
+                break
 # Uses click for CLI options
 @click.command()
-@click.option('--timed', default=5, show_default=True, help='Set a certain amoutn of seconds for the script to run')
+@click.option('--timed', help='Set a certain amoutn of seconds for the script to run')
 def main(timed):
     # Checks if the user used the timed option and sets the variables accordingly
     if timed != None:
         global timedRun, timedAmount
         timedRun = True
-        timedAmount = timed
+        timedAmount = int(timed)
     # Creates a thread to run the input function on
     scriptThread = th.Thread(target=mainFunction)
     print('Press SPACE to start. Press DEL to exit')
